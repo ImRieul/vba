@@ -118,3 +118,27 @@ Public  Sub UseAfterDelete()
     End With
 
 End Sub
+
+
+sub editrange()
+
+    Dim nowRange as Range
+
+    Set nowRange = Selection
+
+    call calculation.DivideRange(nowRange, 1000000)
+    nowRange.NumberFormatLocal = "#,##0.0"
+
+end sub
+
+Public  Sub unMerge()
+
+    call tools.UnMergePull(Selection)
+
+End Sub
+
+Public  Sub mergeGroup()
+
+    call tools.MergeEqualValue(Selection)
+
+End Sub
