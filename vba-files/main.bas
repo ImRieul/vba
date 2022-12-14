@@ -132,13 +132,25 @@ sub editrange()
 end sub
 
 Public  Sub unMerge()
-
     call tools.UnMergePull(Selection)
-
 End Sub
 
 Public  Sub mergeGroup()
-
     call tools.MergeEqualValue(Selection)
+End Sub
 
+Public  Sub costFormat()
+    call formatter.AccountingInRange(Selection, "#,##0.0")
+End Sub
+
+Public  Sub parientFormat()
+    call formatter.AccountingInRange(Selection, "#,##0")
+End Sub
+
+Public  Sub percentFormat()
+    call formatter.PercentInRange(Selection)
+End Sub
+
+Public  Sub dataToSrting()
+    call tools.FunctionToString(Selection, "SUMIFS")
 End Sub
