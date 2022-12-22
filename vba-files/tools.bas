@@ -68,7 +68,6 @@ Public Function RowValueMin(Byval ran, rows as Range) As String
     RowValueMin = cells(MinAddress(ran).row, rows.column).value
 End Function
 
-
 Public  Sub UnMergePull(ByRef rng as Range)     ' OK
     If (rng.MergeCells) Then
         rng.UnMerge
@@ -121,3 +120,76 @@ Public  Sub FunctionToString(ByRef rng as Range, Optional func as String)
         End If
     Next cell
 End Sub
+
+
+Public Function RankIndex(ByVal rng As Range, rank As Integer, Optional sort As Integer) As Range
+
+    Dim cell As Range
+
+    If (sort <> 0) Then
+        sort = 1
+    End If
+
+    For Each cell In rng
+        If (Application.rank(cell, rng, sort) = rank) Then
+            Set RankIndex = cell
+            Exit Function
+        End If
+    Next cell 
+
+End Function
+
+
+Public  Function RankIndexColumn(ByVal rng As Range, columnAddress As Range, rank As Integer, Optional sort As Integer) As String
+
+    RankIndexColumn = Cells(RankIndex(rng, rank, sort).row, columnAddress.column).value
+
+End Function
+
+Public  Function RankIndexRow(ByVal rng As Range, rowAddress As Range, rank As Integer, Optional sort As Integer) As String
+
+    RankIndexRow = Cells(rowAddress.row, RankIndex(rng, rank, sort).column).value
+
+End Function
+
+Public  Function indexColumn(ByVal rng As Range, columnAddress As Range, index As Integer) As String
+
+    indexColumn = Cells(rng.item(index, 1).row, columnAddress.column).value
+
+End Function
+
+Public  Function indexRow(ByVal rng As Range, rowAddress As Range, index As Integer) As String
+
+    indexRow = Cells(rowAddress.row, rng.item(1, index).column).value
+
+End Function
+
+public sub divideRange(ByVal rng as Range, ByVal Optional div as Long)
+    dim cell as Range
+    dim i as Integer
+    
+    if div = 0 then
+        div = 1
+    end if
+    
+    for each cell in rng
+        if Not isFormulaInCell(cell) then
+
+            if (cell.value = 0 or not IsNumeric(cell.value)) then
+                cell.value = 0
+            else
+                cell.value = cell.value / div
+            end if
+
+        end if
+    next cell
+end sub
+
+
+public function isFormulaInCell(rng as Range) as Boolean
+    if (InStr(rng.Formula, "=") <> 0) then
+        isFormulaInCell = True
+    else
+        isFormulaInCell = False
+    end if
+end function

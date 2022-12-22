@@ -131,8 +131,14 @@ sub editrange()
 
 end sub
 
-Public  Sub unMerge()
-    call tools.UnMergePull(Selection)
+public sub mergeWithShortcut()
+
+    if (Selection.MergeCells) then
+        call tools.UnMergePull(Selection)
+    else
+        call tools.Merge(Selection)
+    end if
+
 End Sub
 
 Public  Sub mergeGroup()
@@ -154,3 +160,17 @@ End Sub
 Public  Sub dataToSrting()
     call tools.FunctionToString(Selection, "SUMIFS")
 End Sub
+
+public sub tableDivision()
+    Dim THOUSAND, MILLION, HUNDRED_MILLION as Long
+
+    THOUSAND = 1000
+    MILLION = 1000000
+    HUNDRED_MILLION = 100000000
+
+    call tools.DivideRange(Selection, MILLION)
+end sub
+
+public sub tablePullEmptyCell()
+    call tools.DivideRange(Selection, 1)
+end sub

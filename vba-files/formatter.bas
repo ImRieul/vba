@@ -4,6 +4,10 @@ Public  Function Formatter(ByVal str, form As String)        ' OK
     Formatter = format(str, form)
 End Function
 
+Public  Function FormatterNumber(ByVal num As Double, form As String)
+    FormatterNumber = format(num, form)
+End Function
+
 Public  Sub AccountingInRange(ByRef rng As Range, form As String)      ' OK
     Dim formatter As String
     Dim zeroFormat As String
