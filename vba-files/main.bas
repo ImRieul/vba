@@ -163,14 +163,84 @@ End Sub
 
 public sub tableDivision()
     Dim THOUSAND, MILLION, HUNDRED_MILLION as Long
+    dim box As String
 
     THOUSAND = 1000
     MILLION = 1000000
     HUNDRED_MILLION = 100000000
 
-    call tools.DivideRange(Selection, MILLION)
+    box = UCase(inputbox("please input a divisible number" & chr(13) & "thousand or million or hundred million"))
+
+    if (box = "THOUSAND") then
+        call calculation.divideRange(Selection, THOUSAND)
+    elseif (box = "MILLION") then
+        call calculation.divideRange(Selection, MILLION)
+    elseif (box = "HUNDRED MILLION") then
+        call calculation.divideRange(Selection, HUNDRED_MILLION)
+    else
+        msgbox box & " is not exist option."
+        exit sub
+    end if
 end sub
 
 public sub tablePullEmptyCell()
-    call tools.DivideRange(Selection, 1)
+    call calculation.DivideRange(Selection, 1)
+end sub
+
+public sub checkCellUseColor()
+
+    dim WHITE as Long
+
+    WHITE = 16777215
+
+    if (selection.interior.color = WHITE) then
+        selection.interior.color = vbyellow
+    else
+        selection.interior.color = xlNone
+    end if
+end sub
+
+public sub selectFirstCell()
+
+    dim thisSheet as worksheet
+    dim i as long
+
+    set thisSheet = activeSheet
+
+    for i = 1 to sheets.count
+        worksheets(i).select
+        cells(1, 1).select
+    next i
+
+    thisSheet.select
+
+end sub
+
+public sub paintBetweenColorYellow()
+    
+    dim between as integer
+    dim rowEnd as Long
+
+    dim betweenInput, rowEndInput as String
+
+    betweenInput = inputbox("pleesae between number")
+    rowEndInput = inputbox("please row end")
+
+    if not (isNumeric(betweenInput)) then
+        between = 0
+    else
+        between = Val(betweenInput)
+    end if
+
+    if not (isNumeric(rowEndInput)) then
+        rowEnd = 0
+    else
+        rowEnd = Val(rowEndInput)
+    end if
+
+    call tools.paintBetweenRow(Selection, between)
+end sub
+
+public sub resetFunction()
+    call tools.resetFormula(Selection)
 end sub

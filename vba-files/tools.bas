@@ -164,27 +164,6 @@ Public  Function indexRow(ByVal rng As Range, rowAddress As Range, index As Inte
 
 End Function
 
-public sub divideRange(ByVal rng as Range, ByVal Optional div as Long)
-    dim cell as Range
-    dim i as Integer
-    
-    if div = 0 then
-        div = 1
-    end if
-    
-    for each cell in rng
-        if Not isFormulaInCell(cell) then
-
-            if (cell.value = 0 or not IsNumeric(cell.value)) then
-                cell.value = 0
-            else
-                cell.value = cell.value / div
-            end if
-
-        end if
-    next cell
-end sub
-
 
 public function isFormulaInCell(rng as Range) as Boolean
     if (InStr(rng.Formula, "=") <> 0) then
@@ -193,3 +172,102 @@ public function isFormulaInCell(rng as Range) as Boolean
         isFormulaInCell = False
     end if
 end function
+
+
+Public sub paintBetweenRow(ByVal rng As Range, between As Integer, Optional rowEnd as Long)
+
+    dim rowStart as Long
+    dim row as Long
+
+    if (rowEnd = 0) then
+        rowEnd = cells(rows.count, rng.column).end(xlup).row
+        rowStart = rng.row
+    elseif (rng.row > rowEnd) then
+        rowStart = rowEnd
+        rowEnd = rng.row
+    else
+        rowStart = rng.row
+    end if
+        
+    for row = rowStart to rowEnd step between
+        cells(row, rng.column).interior.color = vbyellow
+    next row
+
+End sub
+
+
+public function compareThreeValues(val1, val2, val3 as Long) as String
+
+    upup = "매년 상승 추세"
+    upgo = ""
+    updown = ""
+
+    goup = ""
+    gogo = ""
+    godown = ""
+
+    downup = ""
+    downgo = ""
+    downdown = ""
+
+    If (val1 > val2) Then 
+
+        If (val2 > val3) Then
+            compareThreeValues = downdown
+        Elseif (val2 = val3) Then
+            compareThreeValues = downgo
+        else    ' val2 < val3
+            compareThreeValues = downup
+        End If
+
+    Elseif (val1 = val2) Then
+
+        If (val2 > val3) Then
+            compareThreeValues = godown
+        Elseif (val2 = val3) Then
+            compareThreeValues = gogo
+        else    ' val2 < val3
+            compareThreeValues = goup
+        End If
+
+    else    ' val1 < val2
+
+        If (val2 > val3) Then
+            compareThreeValues = updown
+        Elseif (val2 = val3) Then
+            compareThreeValues = upgo
+        else    ' val2 < val3
+            compareThreeValues = upup
+        End If
+    
+    End If
+
+end function
+
+Public  Function compareTwoValues(val1, val2 as Long) as String
+
+    up = "많음"
+    go = ""
+    down = "적음"
+
+    If (val1 > val2) Then 
+        compareTwoValues = down
+    Elseif (val1 = val2) Then
+        compareTwoValues = go
+    else    ' val1 < val2
+        compareTwoValues = up
+    End If
+
+End Function
+
+Public  Sub resetFormula(rng as Range)
+
+    For Each r In rng
+
+        if r.hasformula then
+            r.value = r.formula
+        end if
+    
+    Next r 
+
+End Sub

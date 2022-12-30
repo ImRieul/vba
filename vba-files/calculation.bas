@@ -1,17 +1,22 @@
 Attribute VB_Name = "calculation"
 
-Public  Sub DivideRange (ByRef ran As Range, ByVal divisor As Double)
-
-    Dim cell As Range
-
-    For Each cell In ran
-        
-        If (cell.value = "") Then
-            cell.value = 0
-        ElseIf IsNumeric(cell.Value) and cell.value <> 0 Then
-            cell.Value = cell.Value / divisor
-        End If
+public sub divideRange(ByVal rng as Range, ByVal Optional div as Long)
+    dim cell as Range
+    dim i as Integer
     
-    Next cell 
+    if div = 0 then
+        div = 1
+    end if
+    
+    for each cell in rng
+        if Not tools.isFormulaInCell(cell) then
 
-End Sub
+            if (cell.value = 0 or not IsNumeric(cell.value)) then
+                cell.value = 0
+            else
+                cell.value = cell.value / div
+            end if
+
+        end if
+    next cell
+end sub
